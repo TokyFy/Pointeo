@@ -2,31 +2,50 @@ import React, {useEffect, useRef, useState} from "react";
 import jsQR from "jsqr";
 import styled from "styled-components";
 
-const Light =  styled.div`
+const Result =  styled.p`
+  font-size: 1rem;
   position: absolute;
-  background-color: aquamarine;
-  height: 30px;
-  width: 30px;
+  background-color: #6c63ff;
+  color: white;
+  padding: 4px 32px;
   z-index: 3;
-  border-radius: 50%;
+  border-radius: 5px;
   bottom: 15px;
-  right: 15px;
+  right: 50%;
+  transform: translate(50% , 0);
+  max-width: 90%;
+  text-align: center;
+`
+
+const ScanArea = styled.div<{Area : number}>`
+  border-radius: 30px;
+  width: ${props => props.Area}px;
+  height: ${props => props.Area}px;
+  border: 6px solid #6c63ff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% , -50%);
+  z-index: 99;
 `
 
 const QrScanner: React.FC = ()=>{
+    const AREA:number = 320; //pixel
 
-    const videoRef = useRef<HTMLVideoElement>(null) //document.getElementById('video')! as HTMLVideoElement;
-    const canvasRef = useRef<HTMLCanvasElement>(null) //document.getElementById('canvas')! as HTMLCanvasElement;
+    const viewportHeight = window.innerHeight;
+    const viewportWidth = window.innerWidth;
+
+    const videoRef = useRef<HTMLVideoElement>(null)
+    const canvasRef = useRef<HTMLCanvasElement>(null)
+
 
     const [scanned, setScanned] = useState(false);
+    const [result, setResult] = useState("");
 
     useEffect(()=>{
 
         const video = videoRef.current!;
         const canvas = canvasRef.current!;
-
-        const viewportHeight = window.innerHeight;
-        const viewportWidth = window.innerWidth;
 
         let CanvasContext = canvas.getContext('2d')!;
         CanvasContext.filter = 'grayscale(1)';
@@ -39,6 +58,7 @@ const QrScanner: React.FC = ()=>{
                 video: {
                     width: { ideal: viewportHeight },
                     height: { ideal: viewportWidth },
+                    facingMode : 'environment'
                 },
                 audio: false,
             })
@@ -52,23 +72,14 @@ const QrScanner: React.FC = ()=>{
                 console.log('An error occurred: ' + err);
             });
 
-        function drawLine(begin : {x: number , y:number}, end:{x: number , y:number}, color:string) {
-            CanvasContext.beginPath();
-            CanvasContext.moveTo(begin.x, begin.y);
-            CanvasContext.lineTo(end.x, end.y);
-            CanvasContext.lineWidth = 4;
-            CanvasContext.strokeStyle = color;
-            CanvasContext.stroke();
-        }
-
         function camera() {
             if(!scanned) {
                 CanvasContext.drawImage(video, 0, 0, viewportWidth, viewportHeight);
                 let imageData = CanvasContext.getImageData(
-                    0,
-                    0,
-                    canvas.width,
-                    canvas.height
+                    canvas.width/2 - AREA/2,
+                    canvas.height/2 - AREA/2,
+                    AREA,
+                    AREA
                 );
 
                 let code = jsQR(
@@ -82,40 +93,21 @@ const QrScanner: React.FC = ()=>{
 
                 if (code) {
                     setScanned(true);
-
-                    drawLine(
-                        code.location.topLeftCorner,
-                        code.location.topRightCorner,
-                        '#6c63ff'
-                    );
-                    drawLine(
-                        code.location.topRightCorner,
-                        code.location.bottomRightCorner,
-                        '#6c63ff'
-                    );
-                    drawLine(
-                        code.location.bottomRightCorner,
-                        code.location.bottomLeftCorner,
-                        '#6c63ff'
-                    );
-                    drawLine(
-                        code.location.bottomLeftCorner,
-                        code.location.topLeftCorner,
-                        '#6c63ff'
-                    );
+                    setResult(code.data)
                 }
             }
 
             requestAnimationFrame(camera);
         }
         requestAnimationFrame(camera);
-    }, [scanned])
+    }, [scanned , viewportHeight ,viewportWidth])
 
     return <>
-    <video style={{display:"none"}} ref={videoRef}>There is no video</video>
-    <canvas style={{}} ref={canvasRef}>There is no canvas</canvas>
-        { scanned ? <Light/> : null}
-</>
+        <ScanArea Area={AREA}/>
+        <video style={{ filter: 'grayscale(1)'}} ref={videoRef}>There is no video</video>
+        <canvas style={{display:"none"}} ref={canvasRef}>There is no canvas</canvas>
+        { scanned ? <Result>"{result}"</Result> : null }
+        </>
 }
 
 export default QrScanner;
