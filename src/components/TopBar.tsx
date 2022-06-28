@@ -11,17 +11,18 @@ const Bar = styled.div`
   justify-items: center;
   padding: 0 1.6rem;
   margin-top: 1rem;
+
   span {
     margin: 0 auto;
     font-weight: 600;
     color: #3F3D56;
   }
-  
+
   .themeIcon {
-    height: 24px;
+    height: 1.7rem;
     width: auto;
   }
-  
+
   img {
     height: 1rem;
     width: auto;

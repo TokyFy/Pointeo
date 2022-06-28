@@ -57,12 +57,6 @@
   font-size: 14px;
 }
 
-@media screen and (max-width: 375px) {
-  :root {
-    font-size: 12px;
-  }
-}
-
 
 body {
   font-family: 'Montserrat', sans-serif;
@@ -70,12 +64,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-@media screen and (min-width: 600px) {
-  body {
-    height: 100vh;
-  }
+  overflow: hidden;
 }
 
 #root {
@@ -91,4 +80,34 @@ body {
 .App {
   width: 100vw;
   height: 80vh;
+}
+
+@media screen and (min-width: 600px) {
+  body {
+    height: 100vh;
+  }
+}
+
+@media screen and (max-width: 435px) {
+  :root {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  :root {
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 260px) {
+  :root {
+    font-size: 8px;
+  }
+}
+
+@media screen and (max-width: 214px) {
+  :root {
+    font-size: 6px;
+  }
 }

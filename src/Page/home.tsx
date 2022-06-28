@@ -3,14 +3,18 @@ import Hero from "../components/Hero";
 import Button, {BtnContainer} from "../components/Btn";
 import image from '../image/welcome.svg';
 import {useNavigate} from "react-router-dom";
+import useViewports from "../hooks/useViewports";
 
 const Home: React.FC = () => {
 
     const navigate = useNavigate();
 
+    const [viewportHeight, viewportWidth] = useViewports();
+
     const clickHandler = () => {
-        const viewportHeight = window.innerHeight;
-        const viewportWidth = window.innerWidth;
+
+        //const viewportHeight = window.innerHeight;
+        //const viewportWidth = window.innerWidth;
 
         navigator.mediaDevices
             .getUserMedia({
@@ -38,7 +42,7 @@ const Home: React.FC = () => {
                 }
             }
         )
-    }, [navigate]);
+    }, []);
 
 
     return <>

@@ -30,10 +30,10 @@ const ScanArea = styled.div<{ Area: number }>`
 `
 
 const QrScanner: React.FC = () => {
-    const viewportHeight = window.innerHeight < 820 ? window.innerHeight : 820;
+    const viewportHeight = window.innerHeight < 896 ? window.innerHeight : 896;
     const viewportWidth = window.innerWidth < 600 ? window.innerWidth : 600;
 
-    const AREA: number = viewportWidth / 1.5; //pixel
+    const AREA: number = viewportWidth / 2; //pixel
 
     const videoRef = useRef<HTMLVideoElement>(null)
     const canvasRef = useRef<HTMLCanvasElement>(null)

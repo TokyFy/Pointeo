@@ -4,14 +4,14 @@ const Btn = styled.div<{outline? : boolean , large? : boolean}>`
   background-color: ${props => props.outline ? "transparent" : "#3F3D56"};
   height: 3.4rem;
   border-radius: 100px;
-  color: ${props => props.outline ? "3F3D56" : "white"};
+  color: ${props => props.outline ? "#3F3D56" : "white"};
   display: flex;
   align-items: center;
   justify-content: center;
   width: max-content;
   padding: 0 ${props => props.large ? "6.4" : "3.2"}rem;
   font-weight: 500;
-  border: 2px solid ${props => props.outline ? "#3F3D56" : "transparent"};
+  border: 0.15rem solid ${props => props.outline ? "#3F3D56" : "transparent"};
   min-width: 14rem;
   cursor: pointer;
 
