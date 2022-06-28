@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import jsQR from "jsqr";
 import styled from "styled-components";
 
-const Result =  styled.p`
+const Result = styled.p`
   font-size: 1rem;
   position: absolute;
   background-color: #6c63ff;
@@ -12,12 +12,12 @@ const Result =  styled.p`
   border-radius: 5px;
   bottom: 15px;
   right: 50%;
-  transform: translate(50% , 0);
+  transform: translate(50%, 0);
   max-width: 90%;
   text-align: center;
 `
 
-const ScanArea = styled.div<{Area : number}>`
+const ScanArea = styled.div<{ Area: number }>`
   border-radius: 30px;
   width: ${props => props.Area}px;
   height: ${props => props.Area}px;
@@ -25,15 +25,15 @@ const ScanArea = styled.div<{Area : number}>`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50% , -50%);
+  transform: translate(-50%, -50%);
   z-index: 99;
 `
 
-const QrScanner: React.FC = ()=>{
-    const AREA:number = 320; //pixel
+const QrScanner: React.FC = () => {
+    const viewportHeight = window.innerHeight < 820 ? window.innerHeight : 820;
+    const viewportWidth = window.innerWidth < 600 ? window.innerWidth : 600;
 
-    const viewportHeight = window.innerHeight;
-    const viewportWidth = window.innerWidth;
+    const AREA: number = viewportWidth / 1.5; //pixel
 
     const videoRef = useRef<HTMLVideoElement>(null)
     const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -42,13 +42,12 @@ const QrScanner: React.FC = ()=>{
     const [scanned, setScanned] = useState(false);
     const [result, setResult] = useState("");
 
-    useEffect(()=>{
+    useEffect(() => {
 
         const video = videoRef.current!;
         const canvas = canvasRef.current!;
 
-        let CanvasContext = canvas.getContext('2d')!;
-        CanvasContext.filter = 'grayscale(1)';
+        let CanvasContext = canvas.getContext('2d')!
         canvas.width = viewportWidth;
         canvas.height = viewportHeight;
 
@@ -56,15 +55,15 @@ const QrScanner: React.FC = ()=>{
         navigator.mediaDevices
             .getUserMedia({
                 video: {
-                    width: { ideal: viewportHeight },
-                    height: { ideal: viewportWidth },
-                    facingMode : 'environment'
+                    width: {ideal: viewportHeight},
+                    height: {ideal: viewportWidth},
+                    facingMode: 'environment'
                 },
                 audio: false,
             })
             .then(function (stream) {
                 video.srcObject = stream;
-                video.play().then(()=>{
+                video.play().then(() => {
                     console.log('Video running')
                 });
             })
@@ -73,11 +72,11 @@ const QrScanner: React.FC = ()=>{
             });
 
         function camera() {
-            if(!scanned) {
+            if (!scanned) {
                 CanvasContext.drawImage(video, 0, 0, viewportWidth, viewportHeight);
                 let imageData = CanvasContext.getImageData(
-                    canvas.width/2 - AREA/2,
-                    canvas.height/2 - AREA/2,
+                    canvas.width / 2 - AREA / 2,
+                    canvas.height / 2 - AREA / 2,
                     AREA,
                     AREA
                 );
@@ -99,15 +98,16 @@ const QrScanner: React.FC = ()=>{
 
             requestAnimationFrame(camera);
         }
+
         requestAnimationFrame(camera);
-    }, [scanned , viewportHeight ,viewportWidth])
+    }, [scanned, viewportHeight, viewportWidth, AREA])
 
     return <>
         <ScanArea Area={AREA}/>
-        <video style={{ filter: 'grayscale(1)'}} ref={videoRef}>There is no video</video>
-        <canvas style={{display:"none"}} ref={canvasRef}>There is no canvas</canvas>
-        { scanned ? <Result>"{result}"</Result> : null }
-        </>
+        <video style={{filter: 'grayscale(1)'}} ref={videoRef}>There is no video</video>
+        <canvas style={{display: "none"}} ref={canvasRef}>There is no canvas</canvas>
+        {scanned ? <Result>"{result}"</Result> : null}
+    </>
 }
 
 export default QrScanner;

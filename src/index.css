@@ -57,9 +57,29 @@
   font-size: 14px;
 }
 
+@media screen and (max-width: 375px) {
+  :root {
+    font-size: 12px;
+  }
+}
+
+
 body {
   font-family: 'Montserrat', sans-serif;
-  background-color: #fffcfc;
+  background-color: #6c63ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (min-width: 600px) {
+  body {
+    height: 100vh;
+  }
+}
+
+#root {
+  flex-grow: 1;
 }
 
 * {

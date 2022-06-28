@@ -46,13 +46,19 @@ const HeroText = styled.div`
   margin: 3.2rem 0;
 `
 
+const SubDescription = styled.p`
+  color: #3F3D56;
+  font-weight: 600;
+`
+
 interface HeroPropsType {
-    image : string,
-    Header : string,
-    Description : string
+    image: string,
+    Header: string,
+    Description: string,
+    SubDescription?: string
 }
 
-function Hero(props : HeroPropsType):JSX.Element {
+function Hero(props: HeroPropsType): JSX.Element {
     return (
            <HeroDody>
                <HeroImage>
@@ -67,8 +73,10 @@ function Hero(props : HeroPropsType):JSX.Element {
 
                    <HeroDescription>
                        {props.Description}
-                       {/*To make a scan , allow access to your device’s video camera.*/}
                    </HeroDescription>
+                   <SubDescription>
+                       {props.SubDescription}
+                   </SubDescription>
                </HeroText>
            </HeroDody>
     );
