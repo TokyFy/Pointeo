@@ -6,7 +6,6 @@ const useViewports = () => {
     useEffect(() => {
         const listener = () => {
             SetViewportsSize({vh: window.innerHeight, vw: window.innerWidth})
-            console.log(viewportsSize);
         };
 
         window.addEventListener("resize", listener);

@@ -1,13 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Hero from "../components/Hero";
 import TopBar from "../components/TopBar";
 import {Inner, Wrapper} from "../components/LayoutUtil";
 import Button, {BtnContainer} from "../components/Btn";
 import horaImage from "../image/ImageHero2.svg";
+import {useParams} from "react-router-dom";
 // import errorImage from "../image/ImageHero3.svg";
 
+const Result: React.FC = () => {
 
-const result: React.FC = () => {
+    let {id} = useParams();
+
+    useEffect(()=>{
+        console.log(id);
+    })
+
     return (
         <Wrapper>
             <TopBar/>
@@ -26,4 +33,4 @@ const result: React.FC = () => {
     );
 };
 
-export default result;
+export default Result;

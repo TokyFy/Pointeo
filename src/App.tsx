@@ -36,7 +36,7 @@ function App():JSX.Element {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/app" element={<Main/>}/>
                     <Route path="/Scan" element={<QrScanner/>}/>
-                    <Route path="/result" element={<Result/>}/>
+                    <Route path="/result/:id" element={<Result/>}/>
                 </Routes>
             </Router>
         </Container>
