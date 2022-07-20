@@ -17,10 +17,13 @@ const Result = styled.p`
   text-align: center;
 `;
 
-const ScanArea = styled.div<{ Area: number }>`
+const ScanArea = styled.div.attrs((props: { Area: number }) => ({
+  style: {
+    width: `${props.Area}px`,
+    height: `${props.Area}px`,
+  },
+}))<{ Area: number }>`
   border-radius: 30px;
-  width: ${(props) => props.Area}px;
-  height: ${(props) => props.Area}px;
   border: 6px solid #6c63ff;
   position: absolute;
   top: 50%;
@@ -33,7 +36,7 @@ const QrScanner: React.FC = () => {
   const viewportHeight = window.innerHeight < 896 ? window.innerHeight : 896;
   const viewportWidth = window.innerWidth < 600 ? window.innerWidth : 600;
 
-  const AREA: number = viewportWidth / 2; //pixel
+  const AREA: number = viewportWidth / 1.75; //pixel
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
